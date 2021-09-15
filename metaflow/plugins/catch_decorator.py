@@ -82,6 +82,10 @@ class CatchDecorator(StepDecorator):
 
         # pretend that self.next() was called as usual
         flow._transition = (graph[step].out_funcs, None, None)
+        # call our custom execption handler
+        exception_logger = self.attributes.get('exception_logger', None)
+        if exception_logger:
+            exception_logger(exception)
         # store the exception
         picklable = MetaflowExceptionWrapper(exception)
         flow._catch_exception = picklable
